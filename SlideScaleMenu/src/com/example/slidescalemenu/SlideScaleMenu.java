@@ -4,12 +4,15 @@ import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
@@ -26,27 +29,47 @@ public class SlideScaleMenu extends FrameLayout{
 	public SlideScaleMenu(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		initViews();
-		// TODO Auto-generated constructor stub
+		replaceContentView((Activity)context);
 	}
 
 	public SlideScaleMenu(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		initViews();
-		// TODO Auto-generated constructor stub
+		replaceContentView((Activity)context);
 	}
 
 	public SlideScaleMenu(Context context) {
 		super(context);
 		initViews();
+		replaceContentView((Activity)context);
 	}
 	
+	@Override
+    protected boolean fitSystemWindows(Rect insets) {
+        this.setPadding(insets.left,insets.top,insets.right,insets.bottom);
+        insets.left = insets.top = insets.right = insets.bottom = 0;
+        return true;
+    }
+	
 	private void initViews(){
-		//加载backgroudlayout到该layout下
 		View backgroundLayout = LayoutInflater.from(getContext()).inflate(R.layout.backgroud_layout, this);
 		mShadowView = backgroundLayout.findViewById(R.id.shadow_view);
 		mTopLayout = new RelativeLayout(getContext());
 		mTopLayout.setBackgroundColor(Color.WHITE);
 		addView(mTopLayout);
+	}
+	
+	public void replaceContentView(Activity activity){
+		
+		//get root viewGroup
+		ViewGroup decorView = (ViewGroup)activity.getWindow().getDecorView();
+		
+		//get activity setcontent view
+		View contentView = decorView.getChildAt(0);
+		
+		decorView.removeViewAt(0);
+		mTopLayout.addView(contentView);
+		decorView.addView(this, 0);
 	}
 	
 	@Override

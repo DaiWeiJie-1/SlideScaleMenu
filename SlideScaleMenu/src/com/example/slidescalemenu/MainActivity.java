@@ -12,8 +12,7 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
-		addContentView(new SlideScaleMenu(this), new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+		SlideScaleMenu menu = new SlideScaleMenu(this);
 	}
 
 	@Override
