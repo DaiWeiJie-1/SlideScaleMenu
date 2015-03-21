@@ -141,7 +141,6 @@ public class SlideScaleMenu extends FrameLayout{
 		
 		@Override
 		public void onAnimationRepeat(Animator animation) {
-			// TODO Auto-generated method stub
 			
 		}
 		
