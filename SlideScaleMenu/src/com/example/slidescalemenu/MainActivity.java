@@ -1,10 +1,8 @@
 package com.example.slidescalemenu;
 
-import android.os.Bundle;
 import android.app.Activity;
-import android.view.LayoutInflater;
+import android.os.Bundle;
 import android.view.Menu;
-import android.view.ViewGroup.LayoutParams;
 
 public class MainActivity extends Activity {
 
