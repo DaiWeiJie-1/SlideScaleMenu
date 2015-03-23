@@ -1,0 +1,27 @@
+﻿# 这里填入不需要git进行版本管理的文件名称或者目录.
+*.[o]
+*~
+*.bak
+# 此为注释– 将被Git 忽略
+# *.a # 忽略所有.a 结尾的文件
+# !lib.a # 但lib.a 除外
+# /TODO # 仅仅忽略项目根目录下的TODO 文件，不包括subdir/TODO
+# build/ # 忽略build/ 目录下的所有文件
+# doc/*.txt # 会忽略doc/notes.txt 但不包括doc/server/arch.txt
+#
+# 忽略Zend Studio生成的项目文件.
+.buildpath
+*.pyc
+*.pyo
+.pydevproject
+*.class
+*.apk
+*.dex
+*.ap_
+*.properties
+
+proguard/
+
+/SlideScaleMenu/bin
+/SlideScaleMenu/gen
+
