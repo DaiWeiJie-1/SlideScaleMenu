@@ -21,6 +21,7 @@ import android.widget.RelativeLayout;
 public class SlideScaleMenu extends FrameLayout{
 	private float mScaleValue = 0.65f;
 	private float mShadowAddScaleValue = 0.08f;
+	private int mAnimatorDuration = 300;
 	
 	private RelativeLayout mTopLayout;
 	private View mShadowView;
@@ -32,9 +33,6 @@ public class SlideScaleMenu extends FrameLayout{
 	private float mPressDownX = 0;
 	private float mTotalCanMoveWidth;
 	
-	private float mCurrentScaleValue;
-	private float mCurrentShadowAddScaleValue;
-
 	public SlideScaleMenu(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		initViews();
@@ -69,7 +67,6 @@ public class SlideScaleMenu extends FrameLayout{
 		
 		int width = ((WindowManager)getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getWidth();
 		
-		//topLayout最后能移动的距离
 		mTotalCanMoveWidth = (float)((width - width *  mScaleValue)/2 + (1.5- 0.5) * width/2);
 	}
 	
@@ -99,23 +96,23 @@ public class SlideScaleMenu extends FrameLayout{
 				scaleByTouchDistance(distance);
 			}
 		}else if(action == MotionEvent.ACTION_UP){
-//			if(mIsPressDown){
-//				float currentScaleValue = getCurrentScaleValue(mTopLayout);
-//				if(isMenuOpened()){
-//					if(currentScaleValue > mScaleValue + 0.02){
-//						closeMenu();
-//					}else{
-//						openMenu();
-//					}
-//				}else{
-//					if(currentScaleValue < 0.98){
-//						openMenu();
-//					}else{
-//						closeMenu();
-//					}
-//				}
-//				mIsPressDown = false;
-//			}
+			if(mIsPressDown){
+				float currentScaleValue = getCurrentScaleValue(mTopLayout);
+				if(isMenuOpened()){
+					if(currentScaleValue < mScaleValue + 0.05){
+						openMenu();
+					}else{
+						closeMenu();
+					}
+				}else{
+					if(currentScaleValue > 0.95){
+						closeMenu();
+					}else{
+						openMenu();
+					}
+				}
+				mIsPressDown = false;
+			}
 		}
 		
 		return super.dispatchTouchEvent(ev);
@@ -136,14 +133,11 @@ public class SlideScaleMenu extends FrameLayout{
 				distance = mTotalCanMoveWidth;
 			}
 			float mCurrentScaleValue = mScaleValue + (1 - mScaleValue) * (distance/mTotalCanMoveWidth);
-			float mCurrentShadowAddScaleValue = mShadowAddScaleValue - (distance/mTotalCanMoveWidth);
+			float mCurrentShadowAddScaleValue = mShadowAddScaleValue * (1-distance/mTotalCanMoveWidth);
 			mTopLayout.setScaleX(mCurrentScaleValue);
 			mTopLayout.setScaleY(mCurrentScaleValue);
-			mShadowView.setScaleX(mCurrentShadowAddScaleValue);
-			mShadowView.setScaleY(mCurrentShadowAddScaleValue);
-			if(mCurrentScaleValue == 1.0){
-				setMenuOpenState(false);
-			}
+			mShadowView.setScaleX(mCurrentScaleValue + mCurrentShadowAddScaleValue);
+			mShadowView.setScaleY(mCurrentScaleValue + mCurrentShadowAddScaleValue);
 		}else{
 			if(distance <= 0){
 				return;
@@ -156,9 +150,6 @@ public class SlideScaleMenu extends FrameLayout{
 			mTopLayout.setScaleY(mCurrentScaleValue);
 			mShadowView.setScaleX(mCurrentScaleValue + mCurrentShadowAddScaleValue);
 			mShadowView.setScaleY(mCurrentScaleValue + mCurrentShadowAddScaleValue);
-			if(mCurrentScaleValue == mScaleValue){
-				setMenuOpenState(true);
-			}
 		}
 	}
 	
@@ -183,14 +174,14 @@ public class SlideScaleMenu extends FrameLayout{
 	}
 	
 	private void openMenu(){
-		scaleTargetView(mTopLayout, mScaleValue,400);
-		scaleTargetView(mShadowView, mScaleValue + mShadowAddScaleValue,400);
+		scaleTargetView(mTopLayout, mScaleValue,mAnimatorDuration);
+		scaleTargetView(mShadowView, mScaleValue + mShadowAddScaleValue,mAnimatorDuration);
 		setMenuOpenState(true);
 	}
 	
 	private void closeMenu(){
-		scaleTargetView(mTopLayout, 1f,400);
-		scaleTargetView(mShadowView, 1f,400);
+		scaleTargetView(mTopLayout, 1f,mAnimatorDuration);
+		scaleTargetView(mShadowView, 1f,mAnimatorDuration);
 		setMenuOpenState(false);
 	}
 	
