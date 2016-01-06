@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+
 import android.widget.RelativeLayout;
 
 public class SlideScaleMenu extends FrameLayout{
